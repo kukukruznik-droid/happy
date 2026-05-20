@@ -8,6 +8,7 @@
 
 html {
     height: 100%;
+    background: var(--background);
 }
 
 html,
@@ -59,17 +60,24 @@ a {
 .page-shell {
     position: relative;
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem;
+    padding: max(3rem, env(safe-area-inset-top))
+        max(3rem, env(safe-area-inset-right))
+        max(3rem, env(safe-area-inset-bottom))
+        max(3rem, env(safe-area-inset-left));
+    overflow: hidden;
+    isolation: isolate;
 }
 
 .bg-animation {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    inset: -18vmax;
     pointer-events: none;
     overflow: hidden;
+    z-index: 0;
 }
 
 .bg-animation::before,
@@ -147,15 +155,56 @@ a {
 
 @media (max-width: 640px) {
     .page-shell {
-        padding: 1.5rem;
+        min-height: 100dvh;
+        align-items: stretch;
+        padding: max(1.25rem, env(safe-area-inset-top))
+            max(1rem, env(safe-area-inset-right))
+            max(1.25rem, env(safe-area-inset-bottom))
+            max(1rem, env(safe-area-inset-left));
     }
 
     .content-card {
-        padding: 2rem;
-        border-radius: 24px;
+        align-self: center;
+        width: min(100%, 430px);
+        padding: clamp(1.45rem, 7vw, 2.15rem);
+        border-radius: 22px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
     }
 
     .content-card h1 {
-        font-size: 2.2rem;
+        font-size: clamp(2.15rem, 11vw, 3.15rem);
+        line-height: 0.98;
+    }
+
+    .content-card p {
+        margin-top: 1.1rem;
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+    .content-card .eyebrow {
+        margin-bottom: 0.85rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.16em;
+    }
+
+    .bg-animation::before,
+    .bg-animation::after {
+        filter: blur(82px);
+        opacity: 0.68;
+    }
+
+    .bg-animation::before {
+        width: 76vw;
+        height: 76vw;
+        top: 2%;
+        left: -24%;
+    }
+
+    .bg-animation::after {
+        width: 92vw;
+        height: 92vw;
+        right: -34%;
+        bottom: -18%;
     }
 }
